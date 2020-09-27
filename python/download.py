@@ -11,10 +11,10 @@
 	Insert path to the firefox profile you configured. (Note: A firefox profile with the pre-requisites has to be made in order for the script to run properly)
 
 	Run as follows:
-	python download.py <position_of_course_in_list> <unit_number> <starting_lecture_number> <ending_lecture_number>
+	python download.py <position_of_course_in_list> <unit_number> <slides_or_notes> <starting_lecture_number> <ending_lecture_number>	(pass 2 to download slides, 3 to download notes)
 	example:
-	python download.py 3 2 5 12
-	Running the above code downloads lectures 5-12(both inclusive) of the 2nd unit of the 3rd course in 'My Courses' list
+	python download.py 3 2 2 5 12
+	Running the above code downloads slides of lectures 5-12(both inclusive) of the 2nd unit of the 3rd course in 'My Courses' list
 """
 
 import time, sys
@@ -38,7 +38,7 @@ def download(args):
 	pw.send_keys(password)
 	driver.find_element_by_id('postloginform#/Academy/j_spring_security_check').click()
 
-	for i in range(int(args[3]),int(args[4])+1):
+	for i in range(int(args[4]),int(args[5])+1):
 		time.sleep(2)
 		driver.find_element_by_id('menuTab_653').click()																							# Click 'My courses'
 		time.sleep(2)
@@ -48,7 +48,7 @@ def download(args):
 		time.sleep(2)
 		driver.find_element_by_xpath('/html/body/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div/div/div[' + str(i) +']').click()					# Click lecture number
 		time.sleep(2)
-		driver.find_element_by_xpath('/html/body/div[3]/div[2]/div/div[2]/ul/li[2]/a').click()														# Click 'slides' tab
+		driver.find_element_by_xpath('/html/body/div[3]/div[2]/div/div[2]/ul/li[' + args[3] + ']/a').click()										# Click 'slides' or 'notes' tab depending on user input
 
 if __name__ == "__main__":
 	download(sys.argv)
